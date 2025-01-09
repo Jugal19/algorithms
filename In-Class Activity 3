@@ -1,0 +1,50 @@
+##################################################################################################################
+# Student Name: Jugal Patel
+# Student ID:   100744586
+# File Name:    main.py
+# Date Activtiy Started: November 3, 2024
+# Date Activity Completed: November 3, 2024
+# Description: A) Students were to implement the algorithms that returns the length of the longest common
+#                 subsequence using Python.
+#              B) Students were to also implement the knapsack algorithm and test it using the example in the 
+#                 lecture slide.
+##################################################################################################################
+
+def lcs(x, y):
+    m = len(x)
+    n = len(y)
+
+    lcs = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if x[i - 1] == y[j - 1]:
+                lcs[i][j] = lcs[i - 1][j - 1] + 1
+            else:
+                lcs[i][j] = max(lcs[i - 1][j], lcs[i][j - 1])
+
+    return lcs[m][n]
+
+def knapsack(capacity, weights, values):
+    n = len(weights)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for j in range(1, capacity + 1):
+            if weights[i - 1] <= j:
+                dp[i][j] = max(values[i - 1] + dp[i - 1][j - weights[i - 1]], dp[i - 1][j])
+            else:
+                dp[i][j] = dp[i - 1][j]
+
+    return dp[n][capacity]
+
+if __name__ == "__main__":
+    # Testing LCS function
+    X = "AGGTAB"
+    Y = "GXTXAYB"
+    print("Length of LCS:", lcs(X, Y))  
+
+    weights = [10, 20, 30]
+    values = [60, 100, 120]
+    capacity = 50
+    print("Maximum value in Knapsack:", knapsack(capacity, weights, values))  
